@@ -28,6 +28,7 @@ def createSqlLiteDb():
                           VALUES('192.168.0.1', '192.168.1.1', 2),
                           ('192.168.0.1', '192.168.1.2', 4)''')
         conn.commit()
+        print("Inserted values into database")
     
         cursor.execute('''SELECT * FROM latency''')
         result = cursor.fetchall();
