@@ -13,22 +13,23 @@ def createSqlLiteDb():
                     destination text NOT NULL,
                     latency int NOT NULL
                  ); '''
-   
+    
+    insertTestData = '''INSERT INTO latency(
+                        source, destination, latency)
+                        VALUES('192.168.0.1', '192.168.1.1', 2),
+                        ('192.168.0.1', '192.168.1.2', 4);
+                      '''
     try:
 
         conn = sqlite3.connect(':memory:')
-        print(sqlite3.version)
         print("SQLite database created")
         
         cursor = conn.cursor()
         cursor.execute(fileDbSchema)
-        print("Database table created")
 
-        cursor.execute('''INSERT INTO latency(source, destination, latency)
-                          VALUES('192.168.0.1', '192.168.1.1', 2),
-                          ('192.168.0.1', '192.168.1.2', 4)''')
+        cursor.execute (insertTestData)
         conn.commit()
-        print("Inserted values into database")
+        print("Database created\nInserted values into database")
     
         cursor.execute('''SELECT * FROM latency''')
         result = cursor.fetchall();
