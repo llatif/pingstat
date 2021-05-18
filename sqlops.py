@@ -7,12 +7,12 @@ def createSqlLiteDb():
 # Creates a SQLite3 database in memory
 
     conn = None;
-    fileDbSchema = """ CREATE TABLE IF NOT EXISTS latency (
+    fileDbSchema = ''' CREATE TABLE IF NOT EXISTS latency (
                     id integer PRIMARY KEY,
                     source text NOT NULL,
                     destination text NOT NULL,
                     latency int NOT NULL
-                 ); """
+                 ); '''
    
     try:
 
