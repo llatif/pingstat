@@ -3,6 +3,8 @@ import sqlite3
 from sqlite3 import Error
 from sqlite3.dbapi2 import SQLITE_CREATE_TABLE
 
+dbPath = "ping.db"
+
 def createSqlLiteDb():
 # Creates a SQLite3 database in memory
 
@@ -14,26 +16,14 @@ def createSqlLiteDb():
                     latency int NOT NULL
                  ); '''
     
-    insertTestData = '''INSERT INTO latency(
-                        source, destination, latency)
-                        VALUES('192.168.0.1', '192.168.1.1', 2),
-                        ('192.168.0.1', '192.168.1.2', 4);
-                      '''
     try:
 
-        conn = sqlite3.connect(':memory:')
-        print("SQLite database created")
+        conn = sqlite3.connect(dbPath)
         
         cursor = conn.cursor()
         cursor.execute(fileDbSchema)
-
-        cursor.execute (insertTestData)
         conn.commit()
-        print("Database created\nInserted values into database")
-    
-        cursor.execute('''SELECT * FROM latency''')
-        result = cursor.fetchall();
-        print(result)
+        print("Database and tables\n")
     
     except Error as e:
 
@@ -43,3 +33,28 @@ def createSqlLiteDb():
         
         if conn:
             conn.close()
+
+def insertTestData():
+# Inserts test data into SQLite database
+    
+    insertTestData = ''' INSERT INTO latency(
+                        source, destination, latency)
+                        VALUES('192.168.0.1', '192.168.1.1', 2),
+                        ('192.168.0.1', '192.168.1.2', 4);
+                     '''
+
+    conn = sqlite3.connect(dbPath)
+    cursor = conn.cursor()
+    cursor.execute (insertTestData)
+    conn.commit()
+    print("Inserted values into database")
+
+    conn.close()
+
+def readTableData():
+
+    conn = sqlite3.connect(dbPath)
+    cursor = conn.cursor()
+    cursor.execute('''SELECT * FROM latency''')
+    result = cursor.fetchall();
+    print(result)
